@@ -6,7 +6,7 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-  res.send({ hi: "there" });
+  res.send({ hi: "there, a second version" });
 });
 
 app.get("/greet", (req, res) => {
@@ -20,7 +20,6 @@ app.get("/greet", (req, res) => {
 // res - funciton objet for outgoing
 // res.send - return on the incoming res object
 
-
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000;
 app.listen(PORT);
 // app.listen(5001);
