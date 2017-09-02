@@ -26,13 +26,13 @@ passport.use(
       callbackURL: "/auth/google/callback",
       proxy: true
     },
-    function(accessToken, refreshToken, profile, done) {
+    (accessToken, refreshToken, profile, done) => {
       User.findOne({ googleId: profile.id }).then(existingUser => {
         if (existingUser) {
-          //already have record
+          // we already have a record with the given profile ID
           done(null, existingUser);
         } else {
-          //don't have a record with that ID< make new
+          // we don't have a user record with this ID, make a new record!
           new User({ googleId: profile.id })
             .save()
             .then(user => done(null, user));
