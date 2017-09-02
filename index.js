@@ -1,24 +1,29 @@
 const express = require("express");
-// import express from "express";
-// on SERVER side, you have to use COMMONJS modules
-// NODE Is dumb, can't understand IMPORT
+const mongoose = require("mongoose");
+const keys = require("./config/keys");
+const cookieSession = require("cookie-session");
+const passport = require("passport");
+// const bodyParser = require("body-parser");
+require("./models/User");
+require("./services/passport");
 
+// const authRoutes = require("./routes/authroutes");
+
+mongoose.connect(keys.MONGO_URI);
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send({ hi: "there, a third version" });
-});
+// this is the magic triggering language that causes the serialize and cookie things to work like rails
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days hours
+    keys: [keys.COOKIE_KEY]
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.get("/greet", (req, res) => {
-  res.send({ hi: "greeetssss" });
-});
-
-// app - the express app to register
-// get - watch for HTTP request on GET method
-// '/' - watch for '/' ROUTE access on the GET rest call
-// req - fucntion attrtibute for the incoming
-// res - funciton objet for outgoing
-// res.send - return on the incoming res object
+// authRoutes(app);
+require("./routes/authroutes")(app);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);

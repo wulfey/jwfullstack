@@ -1,0 +1,60 @@
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const keys = require("../config/keys");
+const mongoose = require("mongoose");
+
+// 1 argument means look up a model with this name (note no schmea provided)
+const User = mongoose.model("users");
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+  // this user.id is a shortcut to the MONGOLABs __id
+  // this is not googleId
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id).then(user => {
+    done(null, user);
+  });
+});
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: keys.GOOGLE_CLIENT_ID,
+      clientSecret: keys.GOOGLE_CLIENT_SECRET,
+      callbackURL: "/auth/google/callback"
+    },
+    function(accessToken, refreshToken, profile, done) {
+      User.findOne({ googleId: profile.id }).then(existingUser => {
+        if (existingUser) {
+          //already have record
+          done(null, existingUser);
+        } else {
+          //don't have a record with that ID< make new
+          new User({ googleId: profile.id })
+            .save()
+            .then(user => done(null, user));
+        }
+      });
+    }
+  )
+);
+
+// import express from 'express';
+// on SERVER side, you have to use COMMONJS modules
+// NODE Is dumb, can't understand IMPORT
+
+// passport.use
+// this is way of saying 'use this strategy'
+
+//   function(accessToken, refreshToken, profile, cb) {
+//     User.findOrCreate({ googleId: profile.id }, function (err, user) {
+//       return cb(err, user);
+//     });
+//   }
+
+// console.log("accessToken", accessToken), //accesstoken lets the APP call to Google for user data
+//   console.log("refreshToken", refreshToken), //allows access token to refresh
+//   console.log("profile", profile), //identifying info on user account
+//   console.log("done", done);
