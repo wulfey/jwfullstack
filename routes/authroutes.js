@@ -16,7 +16,7 @@ module.exports = app => {
   app.get("/api/current_user", (req, res) => {
     res.send({
       text: "current user",
-      user: req.user,
+      loggedUser: req.user,
       session: req.session
     });
   });
@@ -24,7 +24,7 @@ module.exports = app => {
   app.get("/", (req, res) => {
     console.log("welcome to the console");
     res.send({
-      hi: "there, a third version, go to the 5000 auth, fix that port"
+      hi: "there, a fourth version, to get MLAB to work"
     });
   });
 
