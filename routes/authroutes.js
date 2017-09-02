@@ -1,4 +1,5 @@
 const passport = require("passport");
+const keys = require("../config/keys");
 
 module.exports = app => {
   app.get(
@@ -24,7 +25,11 @@ module.exports = app => {
   app.get("/", (req, res) => {
     console.log("welcome to the console");
     res.send({
-      hi: "there, a fourth version, to get MLAB to work"
+      hi: "there, a fourth version, to get MLAB to work",
+      GOOGLE_CLIENT_ID: keys.GOOGLE_CLIENT_ID,
+      GOOGLE_CLIENT_SECRET: keys.GOOGLE_CLIENT_SECRET,
+      MONGO_URI: keys.MONGO_URI,
+      COOKIE_KEY: keys.COOKIE_KEY
     });
   });
 
