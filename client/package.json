@@ -8,9 +8,6 @@
     },
     "/api/*": {
       "target": "http://localhost:5000"
-    },
-    "/api/stripepayment": {
-      "target": "http://localhost:5000"
     }
   },
   "dependencies": {
