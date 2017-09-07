@@ -23,7 +23,7 @@ class Header extends Component {
       case false:
         return (
           <li>
-            <a href="/auth/google">Google+ Login</a>
+            <a href="/auth/google">Login Google+</a>
           </li>
         );
       default:
