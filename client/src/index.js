@@ -8,6 +8,12 @@ import App from "./components/App";
 // import registerServiceWorker from "./registerServiceWorker";
 import reduxThunk from "redux-thunk";
 
+import axios from "axios";
+
+// this allows you to have AXIOS in the chrome console
+// this is pretty crazy really
+window.axios = axios;
+
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 
 ReactDOM.render(
@@ -16,3 +22,4 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
+
